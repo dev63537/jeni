@@ -1,0 +1,9 @@
+/* This file is now empty - all styles have been moved to separate files:
+   - base.css: Common styles (reset, navbar, body)
+   - form.css: Instagram-style form styles
+   - dashboard.css: Dashboard-specific styles
+   - logout.css: Logout page styles
+   - popup.css: Popup notification styles
+   
+   Please use the appropriate CSS files for each page.
+*/
