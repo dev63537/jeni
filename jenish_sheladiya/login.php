@@ -48,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <!-- Navigation Bar -->
     <nav class="navbar">
         <div class="nav-container">
-            <a href="index.php" class="nav-logo">YourSite</a>
+            <a href="index.php" class="nav-logo">Shyam Enterprise</a>
             <ul class="nav-menu">
                 <li class="nav-item"><a href="index.php" class="nav-link">Home</a></li>
                 <li class="nav-item"><a href="services.php" class="nav-link">Services</a></li>
@@ -70,7 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <!-- Centered container for the login form -->
     <div class="centered-container">
         <form action="login.php" method="POST" class="login-form">
-            <h2>YourSite</h2>
+            <h2>Shyam Enterprise</h2>
             <?php if ($message) echo '<div class="message">' . htmlspecialchars($message) . '</div>'; ?>
             <input type="text" name="username_or_email" placeholder="Username or email" required />
             <input type="password" name="password" placeholder="Password" required />
