@@ -13,7 +13,7 @@
     <!-- Navigation Bar -->
     <nav class="navbar">
         <div class="nav-container">
-            <a href="index.php" class="nav-logo">YourSite</a>
+            <a href="index.php" class="nav-logo">Shyam Enterprise</a>
             <ul class="nav-menu">
                 <li class="nav-item"><a href="index.php" class="nav-link">Home</a></li>
                 <li class="nav-item"><a href="services.php" class="nav-link">Services</a></li>
@@ -28,7 +28,7 @@
 
     <div class="centered-container">
         <form action="register.php" method="POST" class="signup-form">
-            <h2>YourSite</h2>
+            <h2>Shyam Enterprise</h2>
             <input type="text" name="username" placeholder="Username" required />
             <input type="email" name="email" placeholder="Email" required />
             <input type="password" name="password" placeholder="Password" required />

@@ -10,12 +10,18 @@ if (!isset($_SESSION['user_id'])) {
 
 // Get user details from database
 $user_id = $_SESSION['user_id'];
-$stmt = $conn->prepare("SELECT id, username, email FROM users WHERE id = ?");
+$stmt = $conn->prepare("SELECT id, username, email, role FROM users WHERE id = ?");
 $stmt->bind_param("i", $user_id);
 $stmt->execute();
 $result = $stmt->get_result();
 $user = $result->fetch_assoc();
 $stmt->close();
+
+// Redirect admin users to admin panel
+if ($user && $user['role'] === 'admin') {
+    header("Location: admin_panel.php");
+    exit();
+}
 ?>
 
 <!DOCTYPE html>
@@ -32,7 +38,7 @@ $stmt->close();
     <!-- Navigation Bar -->
     <nav class="navbar">
         <div class="nav-container">
-            <a href="index.php" class="nav-logo">YourSite</a>
+            <a href="index.php" class="nav-logo">Shyam Enterprise</a>
             <ul class="nav-menu">
                 <li class="nav-item"><a href="index.php" class="nav-link">Home</a></li>
                 <li class="nav-item"><a href="services.php" class="nav-link">Services</a></li>
