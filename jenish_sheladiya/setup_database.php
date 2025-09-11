@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `username` varchar(50) NOT NULL,
   `email` varchar(100) NOT NULL,
   `password` varchar(255) NOT NULL,
-  `role` enum('user','admin') DEFAULT 'user',
+  `role` enum('user','manager','admin') DEFAULT 'user',
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`),
@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 ";
 
-// Create orders table
+// Create orders table (with payment fields)
 $create_orders_table = "
 CREATE TABLE IF NOT EXISTS `orders` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -30,9 +30,12 @@ CREATE TABLE IF NOT EXISTS `orders` (
   `quantity` int(11) DEFAULT 1,
   `size` varchar(100) DEFAULT NULL,
   `description` text DEFAULT NULL,
+  `reference_image` varchar(255) DEFAULT NULL,
   `urgent_order` tinyint(1) DEFAULT 0,
   `order_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `status` enum('pending','in_progress','completed','cancelled') DEFAULT 'pending',
+  `payment_status` enum('unpaid','paid','failed') DEFAULT 'unpaid',
+  `amount` decimal(10,2) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 ";
@@ -49,6 +52,21 @@ CREATE TABLE IF NOT EXISTS `contact_messages` (
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `status` enum('new','read','replied') DEFAULT 'new',
   PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+";
+
+// Create payments table
+$create_payments_table = "
+CREATE TABLE IF NOT EXISTS `payments` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `order_id` int(11) NOT NULL,
+  `amount` decimal(10,2) NOT NULL,
+  `method` varchar(50) DEFAULT 'card',
+  `status` enum('success','failed') NOT NULL,
+  `transaction_id` varchar(64) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `order_idx` (`order_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 ";
 
@@ -72,6 +90,13 @@ try {
         echo "<p style='color: green;'>✅ Contact messages table created successfully!</p>";
     } else {
         echo "<p style='color: red;'>❌ Error creating contact messages table: " . $conn->error . "</p>";
+    }
+
+    // Create payments table
+    if ($conn->query($create_payments_table) === TRUE) {
+        echo "<p style='color: green;'>✅ Payments table created successfully!</p>";
+    } else {
+        echo "<p style='color: red;'>❌ Error creating payments table: " . $conn->error . "</p>";
     }
 
     // Check if admin user exists

@@ -35,13 +35,14 @@ session_start();
         </div>
     </nav>
 
-    <div class="services-container">
-        <!-- Hero Section -->
-        <div class="hero-section">
+    <header class="page-hero">
+        <div class="container">
             <h1>About Shyam Enterprise</h1>
             <p>Your Trusted Partner in Printing & Designing Solutions</p>
         </div>
+    </header>
 
+    <div class="services-container">
         <!-- Company Story -->
         <div class="service-category">
             <h3>Our Story</h3>
