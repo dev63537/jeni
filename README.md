@@ -3,7 +3,8 @@
 # dev add style in both and build dashboard and loguot page 
 
 # dev add pagese like service,order,about_us,etc.....
-#sql
+
+# sql
 
 
 -- Database setup for Shyam Enterprise website
