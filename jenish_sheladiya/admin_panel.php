@@ -17,7 +17,7 @@ $result = $stmt->get_result();
 $user = $result->fetch_assoc();
 $stmt->close();
 
-if (!$user || $user['role'] !== 'admin') {
+if (!$user || !in_array($user['role'], ['admin','manager'], true)) {
     header("Location: dashboard.php");
     exit();
 }

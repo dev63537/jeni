@@ -11,6 +11,16 @@ $me->bind_result($role);
 $me->fetch();
 $me->close();
 $can_edit_roles = ($role === 'admin');
+// Ensure DB allows 'manager' role (one-time, safe if already present)
+if ($can_edit_roles) {
+    $res = $conn->query("SHOW COLUMNS FROM users LIKE 'role'");
+    if ($res && $row = $res->fetch_assoc()) {
+        $type = $row['Type'] ?? '';
+        if (strpos($type, "'manager'") === false) {
+            $conn->query("ALTER TABLE users MODIFY role ENUM('user','manager','admin') DEFAULT 'user'");
+        }
+    }
+}
 if (!in_array($role, ['admin','manager'], true)) { header('Location: dashboard.php'); exit(); }
 
 if ($can_edit_roles && $_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['target_id'], $_POST['new_role'])) {
@@ -19,8 +29,14 @@ if ($can_edit_roles && $_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ta
     if ($target !== $user_id) {
         $up = $conn->prepare("UPDATE users SET role = ? WHERE id = ?");
         $up->bind_param('si', $new_role, $target);
-        $up->execute();
+        $ok = $up->execute();
+        $err = $up->error;
         $up->close();
+        if (!$ok) {
+            $_SESSION['flash_error'] = 'Failed to update role: ' . $err;
+        } else {
+            $_SESSION['flash_success'] = 'Role updated successfully.';
+        }
     }
     header('Location: admin_users.php');
     exit();
@@ -60,6 +76,16 @@ $users = $conn->query("SELECT id, username, email, role, created_at FROM users O
     <div class="container">
       <h1>Manage Users</h1>
       <p><?php echo $can_edit_roles ? 'Add/remove admin or manager role' : 'View users (manager)'; ?></p>
+      <?php if (!empty($_SESSION['flash_error'])): ?>
+        <div style="background:#f8d7da;color:#721c24;border:1px solid #f5c6cb;padding:10px;border-radius:6px;margin-top:10px;">
+          <?php echo htmlspecialchars($_SESSION['flash_error']); unset($_SESSION['flash_error']); ?>
+        </div>
+      <?php endif; ?>
+      <?php if (!empty($_SESSION['flash_success'])): ?>
+        <div style="background:#d4edda;color:#155724;border:1px solid #c3e6cb;padding:10px;border-radius:6px;margin-top:10px;">
+          <?php echo htmlspecialchars($_SESSION['flash_success']); unset($_SESSION['flash_success']); ?>
+        </div>
+      <?php endif; ?>
     </div>
   </header>
 

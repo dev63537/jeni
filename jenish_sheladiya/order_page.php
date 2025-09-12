@@ -6,8 +6,8 @@ $message = '';
 $message_type = '';
 $selected_service = isset($_GET['service']) ? $_GET['service'] : '';
 
-// Service options mapping
-$services = [
+// Service options mapping (array() syntax for older PHP compatibility)
+$services = array(
     'flexboard' => 'Flex Board Banner',
     'vinyl' => 'Vinyl Sticker Printing',
     'oneway' => 'One-Way Vision Print',
@@ -29,7 +29,7 @@ $services = [
     'idcard' => 'ID Card',
     'stickers' => 'Stickers',
     'invitation' => 'Invitation Card'
-];
+);
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $customer_name = trim($_POST['customer_name']);

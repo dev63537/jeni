@@ -12,6 +12,19 @@ $me->fetch();
 $me->close();
 if (!in_array($role, ['admin','manager'], true)) { header('Location: dashboard.php'); exit(); }
 
+// Ensure orders.status supports 'in_progress' (safe no-op if already present)
+try {
+    $res = $conn->query("SHOW COLUMNS FROM orders LIKE 'status'");
+    if ($res && $row = $res->fetch_assoc()) {
+        $type = $row['Type'] ?? '';
+        if (strpos($type, "'in_progress'") === false) {
+            $conn->query("ALTER TABLE orders MODIFY status ENUM('pending','in_progress','completed','cancelled') DEFAULT 'pending'");
+        }
+    }
+} catch (Exception $e) {
+    // ignore; UI will still work, but status may be restricted by DB enum
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['order_id'], $_POST['new_status'])) {
     $oid = intval($_POST['order_id']);
     $new = $_POST['new_status'];
@@ -47,11 +60,11 @@ $orders = $conn->query("SELECT id, customer_name, email, phone, service_type, qu
 <body>
   <nav class="navbar">
     <div class="nav-container">
-      <a href="index.php" class="nav-logo">Shyam Enterprise</a>
       <ul class="nav-menu">
         <li class="nav-item"><a href="admin_panel.php" class="nav-link">Admin Panel</a></li>
         <li class="nav-item"><a href="logout.php" class="nav-link">Logout</a></li>
       </ul>
+      <a href="index.php" class="nav-logo">Shyam Enterprise</a>
     </div>
   </nav>
 

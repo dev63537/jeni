@@ -47,7 +47,7 @@ require 'config.php';
               $user_role = 'user';
           }
           ?>
-          <?php if ($user_role === 'admin'): ?>
+          <?php if (in_array($user_role, ['admin','manager'], true)): ?>
             <li class="nav-item"><a href="admin_panel.php" class="nav-link">Admin Panel</a></li>
           <?php else: ?>
             <li class="nav-item"><a href="dashboard.php" class="nav-link">Dashboard</a></li>
@@ -74,8 +74,7 @@ require 'config.php';
       </div>
       <div class="hero-image">
         <div class="logo-container">
-          <div class="logo-symbol">📏</div>
-          <h2>SHYAM<br>ENTERPRISE</h2>
+          <img src="logo.jpg" alt="Shyam Enterprise Logo" class="logo-image" />
         </div>
       </div>
     </div>
