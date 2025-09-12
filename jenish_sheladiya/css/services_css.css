@@ -124,6 +124,17 @@
     gap: 20px;
 }
 
+/* Make stationery items (anchors) look like cards without underline */
+.stationery-item,
+.stationery-item:link,
+.stationery-item:visited,
+.stationery-item:hover,
+.stationery-item:active,
+.stationery-item:focus {
+    text-decoration: none !important;
+    color: inherit !important;
+}
+
 .stationery-item {
     background: rgba(102, 126, 234, 0.1);
     padding: 20px;

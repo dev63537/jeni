@@ -69,12 +69,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         </div>
     </nav>
 
-    <div class="order-container">
-        <div class="order-header">
+    <header class="page-hero">
+        <div class="container">
             <h1>Contact Us</h1>
             <p>Get in touch with us for any inquiries or support</p>
         </div>
+    </header>
 
+    <div class="order-container">
         <div class="order-form-container">
             <?php if ($message): ?>
                 <div class="message <?php echo $message_type; ?>">

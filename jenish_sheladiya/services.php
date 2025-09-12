@@ -203,42 +203,42 @@ session_start();
         <div class="additional-services">
             <h2>Print & Stationery Services</h2>
             <div class="stationery-grid">
-                <div class="stationery-item">
+                <a class="stationery-item" href="order.php?service=visiting_card">
                     <span class="item-icon">📇</span>
                     <span>Visiting Cards</span>
-                </div>
-                <div class="stationery-item">
+                </a>
+                <a class="stationery-item" href="order.php?service=letterhead">
                     <span class="item-icon">📄</span>
                     <span>Letter Head</span>
-                </div>
-                <div class="stationery-item">
+                </a>
+                <a class="stationery-item" href="order.php?service=billbook">
                     <span class="item-icon">📚</span>
                     <span>Bill Book</span>
-                </div>
-                <div class="stationery-item">
+                </a>
+                <a class="stationery-item" href="order.php?service=envelope">
                     <span class="item-icon">✉️</span>
                     <span>Envelope</span>
-                </div>
-                <div class="stationery-item">
+                </a>
+                <a class="stationery-item" href="order.php?service=brochure">
                     <span class="item-icon">📖</span>
                     <span>Brochure</span>
-                </div>
-                <div class="stationery-item">
+                </a>
+                <a class="stationery-item" href="order.php?service=pamphlet">
                     <span class="item-icon">📑</span>
                     <span>Pamphlet</span>
-                </div>
-                <div class="stationery-item">
+                </a>
+                <a class="stationery-item" href="order.php?service=idcard">
                     <span class="item-icon">🆔</span>
                     <span>ID Card</span>
-                </div>
-                <div class="stationery-item">
+                </a>
+                <a class="stationery-item" href="order.php?service=stickers">
                     <span class="item-icon">🏷️</span>
                     <span>Stickers</span>
-                </div>
-                <div class="stationery-item">
+                </a>
+                <a class="stationery-item" href="order.php?service=invitation">
                     <span class="item-icon">💌</span>
                     <span>Invitation Card</span>
-                </div>
+                </a>
             </div>
         </div>
 

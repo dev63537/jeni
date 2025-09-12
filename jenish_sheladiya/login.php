@@ -8,25 +8,48 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $username_or_email = trim($_POST['username_or_email']);
     $password = $_POST['password'];
 
-    $stmt = $conn->prepare("SELECT id, username, email, password FROM users WHERE username = ? OR email = ?");
+    // Fetch a single user match deterministically
+    $stmt = $conn->prepare("SELECT id, username, email, password FROM users WHERE username = ? OR email = ? LIMIT 1");
     $stmt->bind_param("ss", $username_or_email, $username_or_email);
     $stmt->execute();
     $stmt->store_result();
 
-    if ($stmt->num_rows == 1) {
-        $stmt->bind_result($id, $username, $email, $hashed_password);
+    if ($stmt->num_rows === 1) {
+        $stmt->bind_result($id, $username, $email, $stored_password);
         $stmt->fetch();
 
-        if (password_verify($password, $hashed_password)) {
+        $is_valid = password_verify($password, $stored_password);
+
+        // Backward-compat: if passwords were stored in plain text previously
+        if (!$is_valid && hash_equals($stored_password, $password)) {
+            $new_hash = password_hash($password, PASSWORD_DEFAULT);
+            $rehash = $conn->prepare("UPDATE users SET password = ? WHERE id = ?");
+            $rehash->bind_param("si", $new_hash, $id);
+            $rehash->execute();
+            $rehash->close();
+            $stored_password = $new_hash;
+            $is_valid = true;
+        }
+
+        if ($is_valid) {
+            // Rehash if needed
+            if (password_needs_rehash($stored_password, PASSWORD_DEFAULT)) {
+                $new_hash2 = password_hash($password, PASSWORD_DEFAULT);
+                $upd = $conn->prepare("UPDATE users SET password = ? WHERE id = ?");
+                $upd->bind_param("si", $new_hash2, $id);
+                $upd->execute();
+                $upd->close();
+            }
+
             $_SESSION['user_id'] = $id;
             $_SESSION['username'] = $username;
             header("Location: dashboard.php");
             exit();
         } else {
-            $message = "Invalid password.";
+            $message = "Invalid credentials.";
         }
     } else {
-        $message = "No user found with that username or email.";
+        $message = "Invalid credentials.";
     }
 
     $stmt->close();

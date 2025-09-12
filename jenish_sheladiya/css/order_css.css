@@ -80,6 +80,50 @@
     gap: 10px;
 }
 
+/* Prebuilt templates */
+.template-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 14px;
+}
+
+.template-option {
+    position: relative;
+    display: block;
+    border: 2px solid #e9ecef;
+    border-radius: 12px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.template-option:hover {
+    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+}
+
+.template-option input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.template-option img {
+    display: block;
+    width: 50px;
+    height: 59px;
+    object-fit: cover;
+    margin: 10px auto;
+    border-radius: 8px;
+}
+
+/* removed price badge */
+
+.template-option input[type="radio"]:checked + img,
+.template-option input[type="radio"]:checked ~ img {
+    outline: 3px solid #667eea;
+    outline-offset: -3px;
+}
+
 .form-group {
     margin-bottom: 20px;
 }

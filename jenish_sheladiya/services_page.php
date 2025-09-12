@@ -20,6 +20,7 @@ session_start();
             <ul class="nav-menu">
                 <li class="nav-item"><a href="index.php" class="nav-link">Home</a></li>
                 <li class="nav-item"><a href="services.php" class="nav-link active">Services</a></li>
+                <li class="nav-item"><a href="pricing.php" class="nav-link">Pricing</a></li>
                 <li class="nav-item"><a href="order.php" class="nav-link">Order Now</a></li>
                 <li class="nav-item"><a href="about.php" class="nav-link">About Us</a></li>
                 <li class="nav-item"><a href="contact.php" class="nav-link">Contact</a></li>

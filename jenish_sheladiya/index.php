@@ -47,7 +47,7 @@ require 'config.php';
               $user_role = 'user';
           }
           ?>
-          <?php if ($user_role === 'admin'): ?>
+          <?php if (in_array($user_role, ['admin','manager'], true)): ?>
             <li class="nav-item"><a href="admin_panel.php" class="nav-link">Admin Panel</a></li>
           <?php else: ?>
             <li class="nav-item"><a href="dashboard.php" class="nav-link">Dashboard</a></li>
@@ -74,8 +74,7 @@ require 'config.php';
       </div>
       <div class="hero-image">
         <div class="logo-container">
-          <div class="logo-symbol">📏</div>
-          <h2>SHYAM<br>ENTERPRISE</h2>
+          <img src="logo.jpg" alt="Shyam Enterprise Logo" class="logo-image" />
         </div>
       </div>
     </div>
@@ -86,22 +85,22 @@ require 'config.php';
     <div class="container">
       <h2>Our Popular Services</h2>
       <div class="services-grid">
-        <div class="service-card">
+        <div class="service-card" style="cursor:pointer" onclick="location.href='order.php?service=flexboard'">
           <div class="service-icon">📋</div>
           <h3>Flex Board Banner</h3>
           <p>Weather resistant outdoor advertising</p>
         </div>
-        <div class="service-card">
+        <div class="service-card" style="cursor:pointer" onclick="location.href='order.php?service=vinyl'">
           <div class="service-icon">🏷️</div>
           <h3>Vinyl Sticker Printing</h3>
           <p>Durable custom vinyl stickers</p>
         </div>
-        <div class="service-card">
+        <div class="service-card" style="cursor:pointer" onclick="location.href='order.php?service=oneway'">
           <div class="service-icon">👁️</div>
           <h3>One-Way Print</h3>
           <p>Privacy window graphics</p>
         </div>
-        <div class="service-card">
+        <div class="service-card" style="cursor:pointer" onclick="location.href='order.php?service=reflective'">
           <div class="service-icon">✨</div>
           <h3>Reflective Vinyl Print</h3>
           <p>High-visibility safety materials</p>

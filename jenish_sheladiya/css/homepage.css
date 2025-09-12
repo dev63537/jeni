@@ -76,15 +76,18 @@
 
 .logo-container {
     text-align: center;
-    background: rgba(255, 255, 255, 0.1);
-    padding: 40px;
-    border-radius: 20px;
-    backdrop-filter: blur(10px);
+    background: rgba(255, 255, 255, 0.9);
+    padding: 16px;
+    border-radius: 12px;
+    border: 1px solid #eee;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.08);
 }
 
-.logo-symbol {
-    font-size: 4rem;
-    margin-bottom: 20px;
+.logo-image {
+    display: block;
+    max-width: 100%;
+    width: 50px; /* compact desktop size */
+    height: auto;
 }
 
 .logo-container h2 {
@@ -425,7 +428,7 @@
 }
 
 /* Responsive Design */
-@media (max-width: 768px) {
+@media (max-width: 600px) {
     .hero-content {
         grid-template-columns: 1fr;
         text-align: center;
@@ -448,5 +451,8 @@
     .cta-buttons {
         flex-direction: column;
         align-items: center;
+    }
+    .logo-image {
+        width: 70px; /* compact on mobile */
     }
 }

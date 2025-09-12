@@ -17,7 +17,7 @@ $result = $stmt->get_result();
 $user = $result->fetch_assoc();
 $stmt->close();
 
-if (!$user || $user['role'] !== 'admin') {
+if (!$user || !in_array($user['role'], ['admin','manager'], true)) {
     header("Location: dashboard.php");
     exit();
 }
@@ -57,40 +57,6 @@ $recent_messages = $conn->query("SELECT * FROM contact_messages ORDER BY created
     <link rel="stylesheet" href="css/base.css" />
     <link rel="stylesheet" href="css/dashboard.css" />
     <style>
-        .admin-header {
-            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
-            color: white;
-            padding: 20px;
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-        
-        .stat-card {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            text-align: center;
-        }
-        
-        .stat-number {
-            font-size: 2rem;
-            font-weight: bold;
-            color: #e74c3c;
-        }
-        
-        .stat-label {
-            color: #666;
-            margin-top: 5px;
-        }
-        
         .data-section {
             background: white;
             padding: 20px;
@@ -98,46 +64,13 @@ $recent_messages = $conn->query("SELECT * FROM contact_messages ORDER BY created
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             margin-bottom: 20px;
         }
-        
-        .data-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 15px;
-        }
-        
-        .data-table th,
-        .data-table td {
-            padding: 10px;
-            text-align: left;
-            border-bottom: 1px solid #eee;
-        }
-        
-        .data-table th {
-            background: #f8f9fa;
-            font-weight: 600;
-        }
-        
-        .status-badge {
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 0.8rem;
-            font-weight: 500;
-        }
-        
-        .status-pending {
-            background: #fff3cd;
-            color: #856404;
-        }
-        
-        .status-completed {
-            background: #d4edda;
-            color: #155724;
-        }
-        
-        .status-new {
-            background: #cce5ff;
-            color: #004085;
-        }
+        .data-table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        .data-table th, .data-table td { padding: 10px; text-align: left; border-bottom: 1px solid #eee; }
+        .data-table th { background: #f8f9fa; font-weight: 600; }
+        .status-badge { padding: 4px 8px; border-radius: 4px; font-size: 0.8rem; font-weight: 500; }
+        .status-pending { background: #fff3cd; color: #856404; }
+        .status-completed { background: #d4edda; color: #155724; }
+        .status-new { background: #cce5ff; color: #004085; }
     </style>
 </head>
 
@@ -159,10 +92,12 @@ $recent_messages = $conn->query("SELECT * FROM contact_messages ORDER BY created
         </div>
     </nav>
 
-    <div class="admin-header">
-        <h1>🔧 Admin Panel</h1>
-        <p>Welcome, <?php echo htmlspecialchars($user['username']); ?>! Manage your website data.</p>
-    </div>
+    <header class="page-hero">
+        <div class="container">
+            <h1>Admin Panel</h1>
+            <p>Welcome, <?php echo htmlspecialchars($user['username']); ?>! Manage your website data.</p>
+        </div>
+    </header>
 
     <div class="dashboard-container">
         <!-- Statistics -->
@@ -255,21 +190,21 @@ $recent_messages = $conn->query("SELECT * FROM contact_messages ORDER BY created
                 <div class="card-icon">👥</div>
                 <h3 class="card-title">Manage Users</h3>
                 <p class="card-description">View and manage user accounts</p>
-                <a href="#" class="card-button">Manage Users</a>
+                <a href="admin_users.php" class="card-button">Manage Users</a>
             </div>
 
             <div class="dashboard-card">
                 <div class="card-icon">📋</div>
                 <h3 class="card-title">Manage Orders</h3>
                 <p class="card-description">View and update order status</p>
-                <a href="#" class="card-button">Manage Orders</a>
+                <a href="admin_orders.php" class="card-button">Manage Orders</a>
             </div>
 
             <div class="dashboard-card">
                 <div class="card-icon">📧</div>
                 <h3 class="card-title">Contact Messages</h3>
                 <p class="card-description">View and respond to messages</p>
-                <a href="#" class="card-button">View Messages</a>
+                <a href="admin_messages.php" class="card-button">View Messages</a>
             </div>
 
             <div class="dashboard-card">

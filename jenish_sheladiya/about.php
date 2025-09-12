@@ -35,13 +35,14 @@ session_start();
         </div>
     </nav>
 
-    <div class="services-container">
-        <!-- Hero Section -->
-        <div class="hero-section">
+    <header class="page-hero">
+        <div class="container">
             <h1>About Shyam Enterprise</h1>
             <p>Your Trusted Partner in Printing & Designing Solutions</p>
         </div>
+    </header>
 
+    <div class="services-container">
         <!-- Company Story -->
         <div class="service-category">
             <h3>Our Story</h3>
@@ -59,19 +60,22 @@ session_start();
             <div class="service-card">
                 <div class="service-image">🎯</div>
                 <h3>Our Mission</h3>
-                <p>To provide high-quality printing and designing services that help businesses establish their brand identity and achieve their marketing goals through innovative solutions and exceptional customer service.</p>
+                <p>Our mission is to provide exceptional service and to follow through on our promises. We will strive to deliver individualised solutions to all our client's printing needs and add value to our clients' businesses. The Print Group's staff are focused on providing great service and forming lasting relationships with our clients. We will be judged not only by our words but by our actions.
+                </p>
             </div>
 
             <div class="service-card">
                 <div class="service-image">👁️</div>
                 <h3>Our Vision</h3>
-                <p>To be the leading printing and design company in Gujarat, known for our creativity, reliability, and commitment to customer satisfaction while embracing new technologies and sustainable practices.</p>
+                <p>The Print Group endeavours to become recognised as the benchmark of outstanding service, not just in the printing industry but across all industries. We pride ourselves on bringing results that count in everything that we set out to do and we are constantly striving for successful outcomes in all areas of our business.
+
+</p>
             </div>
 
             <div class="service-card">
                 <div class="service-image">💎</div>
                 <h3>Our Values</h3>
-                <p>Quality, Integrity, Innovation, and Customer Focus are the core values that guide everything we do. We believe in building long-term relationships with our clients through trust and excellence.</p>
+                <p>Our team is our strength and a vital ingredient to everything that we achieve. We value expertise, skill and knowledge in each person's chosen area. Passion, enthusiasm and ambition, personal integrity, honesty, sincerity and above all commitment is what we look for in our people. We strive to provide an environment that attracts highly qualified employees and offers the satisfaction of working in a challenging and successful position.</p>
             </div>
         </div>
 
