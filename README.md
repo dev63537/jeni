@@ -1,3 +1,30 @@
+# steps of add database 
+
+1. Install XAMPP on the new PC
+2. Copy the entire jenish_sheladiya folder to C:\xampp\htdocs\
+3. Start Apache and MySQL in XAMPP
+4. Visit: http://localhost/jenish_sheladiya/install.php
+5. Follow the on-screen instructions
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # Shyam Enterprise - Complete Setup Guide
 
 ## 🚀 Quick Setup for New PC
@@ -20,6 +47,7 @@
 ### Step 3: Deploy Files
 1. Copy the entire `jenish_sheladiya` folder to `C:\xampp\htdocs\`
 2. Access the website: http://localhost/jenish_sheladiya/
+
 
 ### Step 4: Initial Setup
 1. Visit: http://localhost/jenish_sheladiya/setup_database.php
