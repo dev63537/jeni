@@ -1,28 +1,64 @@
-# jeni create login and register and now bar 
+# Shyam Enterprise - Complete Setup Guide
 
-# dev add style in both and build dashboard and loguot page 
+## 🚀 Quick Setup for New PC
 
-# dev add pagese like service,order,about_us,etc.....
+### Prerequisites
+- XAMPP (Apache + MySQL + PHP)
+- Web browser
+- Text editor (optional)
 
-# sql
+### Step 1: Install XAMPP
+1. Download XAMPP from https://www.apachefriends.org/
+2. Install XAMPP in `C:\xampp\` (default location)
+3. Start Apache and MySQL services from XAMPP Control Panel
 
+### Step 2: Setup Database
+1. Open phpMyAdmin: http://localhost/phpmyadmin
+2. Create new database: `jenish_sheladiya`
+3. Run the complete SQL script below
 
--- Database setup for Shyam Enterprise website
--- Run these queries in your MySQL database
+### Step 3: Deploy Files
+1. Copy the entire `jenish_sheladiya` folder to `C:\xampp\htdocs\`
+2. Access the website: http://localhost/jenish_sheladiya/
 
--- Create users table (if not exists)
+### Step 4: Initial Setup
+1. Visit: http://localhost/jenish_sheladiya/setup_database.php
+2. Visit: http://localhost/jenish_sheladiya/migrate_add_manager_role.php
+3. Visit: http://localhost/jenish_sheladiya/migrate_add_order_image.php
+4. Visit: http://localhost/jenish_sheladiya/migrate_payments.php
+
+### Step 5: Admin Access
+- **URL**: http://localhost/jenish_sheladiya/login.php
+- **Username**: admin
+- **Password**: admin123
+
+---
+
+## 📊 Complete Database Schema
+
+### 1. Create Database
+```sql
+CREATE DATABASE IF NOT EXISTS `jenish_sheladiya` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE `jenish_sheladiya`;
+```
+
+### 2. Users Table
+```sql
 CREATE TABLE IF NOT EXISTS `users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `username` varchar(50) NOT NULL,
   `email` varchar(100) NOT NULL,
   `password` varchar(255) NOT NULL,
+  `role` enum('user','manager','admin') DEFAULT 'user',
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`),
   UNIQUE KEY `email` (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+```
 
--- Create orders table
+### 3. Orders Table
+```sql
 CREATE TABLE IF NOT EXISTS `orders` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `customer_name` varchar(100) NOT NULL,
@@ -31,100 +67,120 @@ CREATE TABLE IF NOT EXISTS `orders` (
   `service_type` varchar(50) NOT NULL,
   `quantity` int(11) DEFAULT 1,
   `size` varchar(100) DEFAULT NULL,
-  `description` text,
+  `description` text DEFAULT NULL,
+  `reference_image` varchar(255) DEFAULT NULL,
   `urgent_order` tinyint(1) DEFAULT 0,
   `order_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `status` enum('pending','processing','completed','cancelled') DEFAULT 'pending',
-  `admin_notes` text,
-  `quote_amount` decimal(10,2) DEFAULT NULL,
-  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `status` enum('pending','in_progress','completed','cancelled') DEFAULT 'pending',
+  `payment_status` enum('unpaid','paid','failed') DEFAULT 'unpaid',
+  `amount` decimal(10,2) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+```
 
--- Create contact_messages table for contact form submissions
+### 4. Contact Messages Table
+```sql
 CREATE TABLE IF NOT EXISTS `contact_messages` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(100) NOT NULL,
   `email` varchar(100) NOT NULL,
-  `phone` varchar(20) DEFAULT NULL,
+  `phone` varchar(20) NOT NULL,
   `subject` varchar(200) NOT NULL,
   `message` text NOT NULL,
-  `submitted_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `status` enum('unread','read','replied') DEFAULT 'unread',
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `status` enum('new','read','replied') DEFAULT 'new',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+```
 
--- Create gallery table for showcasing work
-CREATE TABLE IF NOT EXISTS `gallery` (
+### 5. Payments Table
+```sql
+CREATE TABLE IF NOT EXISTS `payments` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `title` varchar(200) NOT NULL,
-  `description` text,
-  `image_path` varchar(255) NOT NULL,
-  `category` varchar(50) NOT NULL,
+  `order_id` int(11) NOT NULL,
+  `amount` decimal(10,2) NOT NULL,
+  `method` varchar(50) DEFAULT 'card',
+  `status` enum('success','failed') NOT NULL,
+  `transaction_id` varchar(64) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `is_featured` tinyint(1) DEFAULT 0,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- Insert sample data for gallery categories
-INSERT INTO `gallery` (`title`, `description`, `image_path`, `category`, `is_featured`) VALUES
-('Flex Board Banner Sample', 'High-quality outdoor advertising banner', '/images/gallery/flexboard1.jpg', 'flexboard', 1),
-('Vinyl Sticker Design', 'Custom vinyl stickers for branding', '/images/gallery/vinyl1.jpg', 'vinyl', 1),
-('LED Board Display', 'Modern LED signage solution', '/images/gallery/led1.jpg', 'ledboard', 1),
-('Business Card Design', 'Professional visiting card design', '/images/gallery/card1.jpg', 'visiting_card', 0);
-
--- Create admin_users table for backend management
-CREATE TABLE IF NOT EXISTS `admin_users` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `username` varchar(50) NOT NULL,
-  `email` varchar(100) NOT NULL,
-  `password` varchar(255) NOT NULL,
-  `role` enum('admin','manager') DEFAULT 'manager',
-  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `last_login` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `username` (`username`),
-  UNIQUE KEY `email` (`email`)
+  KEY `order_idx` (`order_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+```
 
--- Insert default admin user (password: admin123 - change this!)
-INSERT INTO `admin_users` (`username`, `email`, `password`, `role`) VALUES
+### 6. Insert Default Admin User
+```sql
+INSERT INTO `users` (`username`, `email`, `password`, `role`) VALUES
 ('admin', 'admin@shyamenterprise.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'admin');
+```
 
--- Create service_pricing table for managing service rates
-CREATE TABLE IF NOT EXISTS `service_pricing` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `service_code` varchar(50) NOT NULL,
-  `service_name` varchar(200) NOT NULL,
-  `base_price` decimal(10,2) DEFAULT NULL,
-  `price_unit` varchar(50) DEFAULT 'per piece',
-  `description` text,
-  `is_active` tinyint(1) DEFAULT 1,
-  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `service_code` (`service_code`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+---
 
--- Insert service pricing data
-INSERT INTO `service_pricing` (`service_code`, `service_name`, `base_price`, `price_unit`, `description`) VALUES
-('flexboard', 'Flex Board Banner', 25.00, 'per sq ft', 'High-quality outdoor advertising banners'),
-('vinyl', 'Vinyl Sticker Printing', 15.00, 'per sq ft', 'Durable vinyl stickers for branding'),
-('oneway', 'One-Way Vision Print', 45.00, 'per sq ft', 'Window graphics with one-way visibility'),
-('reflective', 'Reflective Vinyl Print', 60.00, 'per sq ft', 'High-visibility reflective materials'),
-('ecohd', 'Eco HD Print', 35.00, 'per sq ft', 'Eco-friendly high-definition printing'),
-('lighting', 'Lighting Board', 150.00, 'per sq ft', 'Illuminated signage solutions'),
-('rollup', 'Roll-Up Standee', 800.00, 'per piece', 'Portable display stands'),
-('canopy', 'Canopy', 2500.00, 'per piece', 'Branded outdoor canopies'),
-('ledboard', 'L.E.D Board', 200.00, 'per sq ft', 'Digital LED display boards'),
-('safety', 'Industrial Safety Sign Board', 40.00, 'per piece', 'Safety compliance signage'),
-('acp', 'A.C.P Board', 80.00, 'per sq ft', 'Aluminum composite panel signage'),
-('foam', 'Foam Board', 20.00, 'per sq ft', 'Lightweight foam board displays'),
-('visiting_card', 'Visiting Cards', 2.00, 'per piece', 'Professional business cards'),
-('letterhead', 'Letter Head', 5.00, 'per piece', 'Branded letterhead printing'),
-('billbook', 'Bill Book', 50.00, 'per book', 'Custom bill books'),
-('envelope', 'Envelope', 3.00, 'per piece', 'Branded envelope printing'),
-('brochure', 'Brochure', 8.00, 'per piece', 'Marketing brochures'),
-('pamphlet', 'Pamphlet', 1.50, 'per piece', 'Promotional pamphlets'),
-('idcard', 'ID Card', 15.00, 'per piece', 'Employee/Student ID cards'),
-('stickers', 'Stickers', 10.00, 'per sheet', 'Custom sticker printing'),
-('invitation', 'Invitation Card', 12.00, 'per piece', 'Event invitation cards');
+## 🔧 Configuration
+
+### Database Configuration
+Edit `config.php` if needed:
+```php
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "jenish_sheladiya";
+```
+
+### File Permissions
+- Ensure `uploads/` folder exists and is writable
+- Check PHP file upload settings in php.ini
+
+---
+
+## 📁 File Structure
+```
+jenish_sheladiya/
+├── config.php              # Database configuration
+├── setup_database.php      # Initial database setup
+├── quick_setup.php         # Quick setup script
+├── migrate_*.php           # Database migration scripts
+├── index.php              # Homepage
+├── login.php              # Login page
+├── register.php           # Registration page
+├── dashboard.php          # User dashboard
+├── admin_panel.php        # Admin panel
+├── order.php              # Order form
+├── services.php           # Services page
+├── about.php              # About page
+├── contact.php            # Contact page
+├── payment_*.php          # Payment processing
+├── css/                   # Stylesheets
+└── uploads/               # File uploads directory
+```
+
+---
+
+## 🚨 Important Notes
+
+1. **Security**: Change default admin password after first login
+2. **Database**: Always backup your database before making changes
+3. **File Uploads**: Ensure uploads directory has proper permissions
+4. **PHP Version**: Requires PHP 7.4+ with MySQLi extension
+5. **Apache**: Enable mod_rewrite for clean URLs
+
+---
+
+## 🔍 Troubleshooting
+
+### Common Issues:
+1. **Database Connection Error**: Check XAMPP MySQL service is running
+2. **File Upload Issues**: Check PHP upload settings and folder permissions
+3. **Page Not Found**: Ensure Apache is running and files are in correct location
+4. **Permission Denied**: Check file/folder permissions on Windows
+
+### Quick Fixes:
+- Restart XAMPP services
+- Clear browser cache
+- Check error logs in XAMPP control panel
+- Verify database credentials in config.php
+
+---
+
+## 📞 Support
+For technical support or questions, contact the development team.
