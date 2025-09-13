@@ -110,39 +110,12 @@ INSERT INTO `users` (`username`, `email`, `password`, `role`) VALUES
 ('admin', 'admin@shyamenterprise.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'admin');
 
 -- =============================================
--- 8. INSERT SAMPLE GALLERY DATA (Optional)
+-- 8. SERVICE PRICING DATA (Optional - Add your own pricing)
 -- =============================================
-INSERT INTO `gallery` (`title`, `description`, `image_path`, `category`, `is_featured`) VALUES
-('Flex Board Banner Sample', 'High-quality outdoor advertising banner', '/images/gallery/flexboard1.jpg', 'flexboard', 1),
-('Vinyl Sticker Design', 'Custom vinyl stickers for branding', '/images/gallery/vinyl1.jpg', 'vinyl', 1),
-('LED Board Display', 'Modern LED signage solution', '/images/gallery/led1.jpg', 'ledboard', 1),
-('Business Card Design', 'Professional visiting card design', '/images/gallery/card1.jpg', 'visiting_card', 0);
-
--- =============================================
--- 9. INSERT SERVICE PRICING DATA (Optional)
--- =============================================
-INSERT INTO `service_pricing` (`service_code`, `service_name`, `base_price`, `price_unit`, `description`) VALUES
-('flexboard', 'Flex Board Banner', 25.00, 'per sq ft', 'High-quality outdoor advertising banners'),
-('vinyl', 'Vinyl Sticker Printing', 15.00, 'per sq ft', 'Durable vinyl stickers for branding'),
-('oneway', 'One-Way Vision Print', 45.00, 'per sq ft', 'Window graphics with one-way visibility'),
-('reflective', 'Reflective Vinyl Print', 60.00, 'per sq ft', 'High-visibility reflective materials'),
-('ecohd', 'Eco HD Print', 35.00, 'per sq ft', 'Eco-friendly high-definition printing'),
-('lighting', 'Lighting Board', 150.00, 'per sq ft', 'Illuminated signage solutions'),
-('rollup', 'Roll-Up Standee', 800.00, 'per piece', 'Portable display stands'),
-('canopy', 'Canopy', 2500.00, 'per piece', 'Branded outdoor canopies'),
-('ledboard', 'L.E.D Board', 200.00, 'per sq ft', 'Digital LED display boards'),
-('safety', 'Industrial Safety Sign Board', 40.00, 'per piece', 'Safety compliance signage'),
-('acp', 'A.C.P Board', 80.00, 'per sq ft', 'Aluminum composite panel signage'),
-('foam', 'Foam Board', 20.00, 'per sq ft', 'Lightweight foam board displays'),
-('visiting_card', 'Visiting Cards', 2.00, 'per piece', 'Professional business cards'),
-('letterhead', 'Letter Head', 5.00, 'per piece', 'Branded letterhead printing'),
-('billbook', 'Bill Book', 50.00, 'per book', 'Custom bill books'),
-('envelope', 'Envelope', 3.00, 'per piece', 'Branded envelope printing'),
-('brochure', 'Brochure', 8.00, 'per piece', 'Marketing brochures'),
-('pamphlet', 'Pamphlet', 1.50, 'per piece', 'Promotional pamphlets'),
-('idcard', 'ID Card', 15.00, 'per piece', 'Employee/Student ID cards'),
-('stickers', 'Stickers', 10.00, 'per sheet', 'Custom sticker printing'),
-('invitation', 'Invitation Card', 12.00, 'per piece', 'Event invitation cards');
+-- Add your own service pricing data here
+-- Example:
+-- INSERT INTO `service_pricing` (`service_code`, `service_name`, `base_price`, `price_unit`, `description`) VALUES
+-- ('flexboard', 'Flex Board Banner', 25.00, 'per sq ft', 'High-quality outdoor advertising banners');
 
 -- =============================================
 -- SETUP COMPLETE

@@ -86,7 +86,7 @@
 .logo-image {
     display: block;
     max-width: 100%;
-    width: 50px; /* compact desktop size */
+    width: 250px; /* compact desktop size */
     height: auto;
 }
 
@@ -453,6 +453,6 @@
         align-items: center;
     }
     .logo-image {
-        width: 70px; /* compact on mobile */
+        width: 250px; /* compact on mobile */
     }
 }
