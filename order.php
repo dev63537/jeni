@@ -82,31 +82,6 @@ $unit_rates = [
 ];
 $urgent_fee = 200;
 
-// Prebuilt template options by service (remote images, no pricing)
-/*
-$template_options = [
-   'flexboard' => [
-        ['src' => 'https://images.unsplash.com/photo-1502899576159-f224dc2349fa?w=800&auto=format&fit=crop'],
-        ['src' => 'https://images.unsplash.com/photo-1545239351-1141bd82e8a6?w=800&auto=format&fit=crop'],
-        ['src' => 'https://images.unsplash.com/photo-1512295767273-ac109ac3acfa?w=800&auto=format&fit=crop'],
-        ['src' => 'https://images.unsplash.com/photo-1520975916090-3105956dac38?w=800&auto=format&fit=crop'],
-        ['src' => 'https://images.unsplash.com/photo-1529336953121-a2a9b9f0f3b0?w=800&auto=format&fit=crop']
-    ],
-    'vinyl' => [
-        ['src' => 'https://images.unsplash.com/photo-1515879218367-8466d910aaa4?w=800&auto=format&fit=crop'],
-        ['src' => 'https://images.unsplash.com/photo-1520975657038-7e0c9e1f0b3b?w=800&auto=format&fit=crop'],
-        ['src' => 'https://images.unsplash.com/photo-1520975916090-3105956dac38?w=800&auto=format&fit=crop'],
-        ['src' => 'https://images.unsplash.com/photo-1512295767273-ac109ac3acfa?w=800&auto=format&fit=crop'],
-        ['src' => 'https://images.unsplash.com/photo-1545239351-1141bd82e8a6?w=800&auto=format&fit=crop']
-    ],
-    'default' => [
-        ['src' => 'https://images.unsplash.com/photo-1515879218367-8466d910aaa4?w=800&auto=format&fit=crop'],
-        ['src' => 'https://images.unsplash.com/photo-1520975916090-3105956dac38?w=800&auto=format&fit=crop'],
-        ['src' => 'https://images.unsplash.com/photo-1502899576159-f224dc2349fa?w=800&auto=format&fit=crop'],
-        ['src' => 'https://images.unsplash.com/photo-1520975657038-7e0c9e1f0b3b?w=800&auto=format&fit=crop'],
-        ['src' => 'https://images.unsplash.com/photo-1529336953121-a2a9b9f0f3b0?w=800&auto=format&fit=crop']
-    ]
-];*/
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $customer_name = trim($_POST['customer_name']);
@@ -118,7 +93,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($size === '' && isset($default_sizes[$service_type])) { $size = $default_sizes[$service_type]; }
     $description = trim($_POST['description']);
     $urgent = isset($_POST['urgent']) ? 1 : 0;
-    $selected_template = isset($_POST['selected_template']) ? trim($_POST['selected_template']) : '';
     $reference_image_path = null;
 
     // Optional image upload
@@ -130,13 +104,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $target = $uploads_dir . '/' . $safe_name;
         if (move_uploaded_file($_FILES['reference_image']['tmp_name'], $target)) {
             $reference_image_path = 'uploads/' . $safe_name; // relative path for web
-        }
-    }
-    // If no upload, fall back to selected prebuilt template
-    if (!$reference_image_path && $selected_template !== '') {
-        // Allow templates from our list: either local under templates/ or remote http(s)
-        if (strpos($selected_template, 'templates/') === 0 || preg_match('/^https?:\/\//i', $selected_template)) {
-            $reference_image_path = $selected_template;
         }
     }
     
@@ -276,26 +243,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         <textarea name="description" id="description" rows="4" 
                             placeholder="Describe your requirements, colors, text, design preferences, etc."><?php echo isset($_POST['description']) ? htmlspecialchars($_POST['description']) : ''; ?></textarea>
                     </div>
-                    <div class="form-section">
-                    <h3>🖼️ Choose a Prebuilt Design (optional)</h3>
-                    <p style="color:#5b6b7f;margin:-10px 0 15px;">Pick one of our ready templates or upload your own reference above.</p>
-                    <?php 
-                        $svcKey = $_POST['service_type'] ?? $selected_service ?? '';
-                        $list = $template_options[$svcKey] ?? $template_options['default'];
-                    ?>
-                    <div class="template-grid">
-                        <?php foreach ($list as $idx => $tpl): 
-                            $src = htmlspecialchars($tpl['src']);
-                            $checked = (isset($_POST['selected_template']) && $_POST['selected_template'] === $src) ? 'checked' : '';
-                        ?>
-                        <label class="template-option">
-                            <input type="radio" name="selected_template" value="<?php echo $src; ?>" <?php echo $checked; ?>>
-                            <img src="<?php echo $src; ?>" alt="Template <?php echo $idx+1; ?>">
-                        </label>
-                        <?php endforeach; ?>
-                    </div>
-                    <small style="display:block;color:#7f8c8d;margin-top:10px;">Select any template per service or upload your own image.</small>
-                </div>
                     <div class="form-group">
                         <label for="reference_image">Reference Image (optional)</label>
                         <input type="file" name="reference_image" id="reference_image" accept="image/*">
@@ -414,16 +361,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
           if (urgent && urgent.checked) total += urgentFee;
           out.textContent = fmt(total);
         }
-        // template selection hook (no pricing)
-        function bindTemplateRadios(){
-          document.querySelectorAll('input[name="selected_template"]').forEach(function(r){
-            r.addEventListener('change', function(){ calc(); });
-          });
-        }
-        bindTemplateRadios();
         select && select.addEventListener('change', function(){ 
           applyDefaultSize(); 
-          // When service changes, reload template grid with server-rendered defaults via simple reload
           this.form.submit();
         });
         qty && qty.addEventListener('input', calc);
